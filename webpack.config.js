@@ -8,7 +8,7 @@ var config = {
       path.resolve(__dirname, 'app/main.js')
     ],
     output: {
-        path: path.resolve(__dirname, 'gh-pages'),
+        path: path.resolve(__dirname, 'build'),
         filename: 'bundle.js'
     },
     module: {
