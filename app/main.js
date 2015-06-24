@@ -5,6 +5,7 @@
 var React = require('react');
 var $ = require('jquery');
 var Item = require('./item.js');
+var Counter = require('./counter.js');
 
 var Main = React.createClass({
     getInitialState: function() {
@@ -30,6 +31,7 @@ var Main = React.createClass({
         return (
             <div>
                 <Item />
+                <Counter />
             </div>
         );
     }
