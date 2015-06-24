@@ -3,6 +3,7 @@
 'use strict';
 
 var React = require('react');
+var $ = require('jquery');
 var Item = require('./item.js');
 
 var Main = React.createClass({

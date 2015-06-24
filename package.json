@@ -5,6 +5,7 @@
     "dev": "webpack-dev-server --devtool eval --progress --colors --hot --content-base build"
   },
   "devDependencies": {
+    "jquery": "2.1.4",
     "webpack-dev-server": "^1.9.0",
     "node-libs-browser": "^0.5.2",
     "webpack": "^1.9.11",
