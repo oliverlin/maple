@@ -7,6 +7,7 @@ var $ = require('jquery');
 var Item = require('./item.js');
 var Counter = require('./counter.js');
 var Round = require('./round.js');
+var CounterToptal = require('./counter_toptal.js');
 
 var Main = React.createClass({
     getInitialState: function() {
@@ -34,6 +35,7 @@ var Main = React.createClass({
                 <Item />
                 <Counter />
                 <Round />
+                <CounterToptal />
             </div>
         );
     }
