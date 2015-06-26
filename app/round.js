@@ -1,17 +1,9 @@
 'use strict'
 
 var React = require('react');
+var NewRound = require('./new_round.js');
+
 var Round = React.createClass({
-  // getInitialState: function(){
-  //   return(
-  //     {
-  //       current_round: 0,
-  //     }
-  //   );
-  // },
-  // componentDidMount: function(){
-  //   this.setProps({round: 1});
-  // },
   handleClick: function(){
     this.props.increaseRound();
   },
@@ -70,6 +62,7 @@ var Stage = React.createClass({
       <div>
         {msg}
         <Round round={this.state.current_round} increaseRound={this._increaseRound}/>
+        <NewRound round={this.state.current_round} increaseRound={this._increaseRound}/>
       </div>
     )
   }
