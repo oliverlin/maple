@@ -2,6 +2,7 @@
 
 var React = require('react');
 var _ = require('underscore');
+var $ = require('jquery');
 
 var Column = React.createClass({
   render(){
@@ -32,10 +33,25 @@ var Bingo = React.createClass({
   },
   getRandomNumbers: function(){
     var numbers = [];
-    _.times(9, function(){
-      numbers.push(_.random(0, 100));
+    var count = $('.count-input').val();
+    var count_of_columns_in_row = count || 3;
+    var amount = count_of_columns_in_row * count_of_columns_in_row;
+    var isNumberDuplicated = function(number){
+      return(_.contains(numbers, number))
+    };
+    _.times(amount, function(){
+      var pushNumber = function(){
+        var random_number = _.random(0, 100);
+        if(isNumberDuplicated(random_number)){
+          pushNumber();
+        } else {
+          numbers.push(random_number);
+        }
+      };
+      pushNumber();
+
     });
-    this.setState({numbers: this.NumbersForView(numbers, 3)});
+    this.setState({numbers: this.NumbersForView(numbers, count_of_columns_in_row)});
   },
   handleClick: function(){
     this.getRandomNumbers();
@@ -61,6 +77,7 @@ var Bingo = React.createClass({
       <div>
         <table>{rows}</table>
         <div onClick={this.handleClick}>Refresh</div>
+        <input className="count-input" type="number" placeholder="Numbers in each row" max="9" min="1"/>
       </div>
     )
   }
