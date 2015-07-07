@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "471d16be945f8506d2f2"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "83c74c38a77f55a1e571"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -122,10 +122,11 @@
 /******/ 					hot._selfAccepted = true;
 /******/ 				else if(typeof dep === "function")
 /******/ 					hot._selfAccepted = dep;
-/******/ 				else if(typeof dep === "number")
-/******/ 					hot._acceptedDependencies[dep] = callback;
-/******/ 				else for(var i = 0; i < dep.length; i++)
+/******/ 				else if(typeof dep === "object")
+/******/ 				for(var i = 0; i < dep.length; i++)
 /******/ 					hot._acceptedDependencies[dep[i]] = callback;
+/******/ 				else
+/******/ 					hot._acceptedDependencies[dep] = callback;
 /******/ 			},
 /******/ 			decline: function(dep) {
 /******/ 				if(typeof dep === "undefined")
@@ -186,6 +187,10 @@
 /******/ 	
 /******/ 	// The update info
 /******/ 	var hotUpdate, hotUpdateNewHash;
+/******/ 	
+/******/ 	function toModuleId(id) {
+/******/ 		return (+id) + "" === id ? +id : id;
+/******/ 	}
 /******/ 	
 /******/ 	function hotCheck(apply, callback) {
 /******/ 		if(hotStatus !== "idle") throw new Error("check() is only allowed in idle status");
@@ -260,7 +265,7 @@
 /******/ 			var outdatedModules = [];
 /******/ 			for(var id in hotUpdate) {
 /******/ 				if(Object.prototype.hasOwnProperty.call(hotUpdate, id)) {
-/******/ 					outdatedModules.push(+id);
+/******/ 					outdatedModules.push(toModuleId(id));
 /******/ 				}
 /******/ 			}
 /******/ 			callback(null, outdatedModules);
@@ -331,7 +336,7 @@
 /******/ 		var appliedUpdate = {};
 /******/ 		for(var id in hotUpdate) {
 /******/ 			if(Object.prototype.hasOwnProperty.call(hotUpdate, id)) {
-/******/ 				var moduleId = +id;
+/******/ 				var moduleId = toModuleId(id);
 /******/ 				var result = getAffectedStuff(moduleId);
 /******/ 				if(!result) {
 /******/ 					if(options.ignoreUnaccepted)
@@ -38584,6 +38589,7 @@
 
 	var React = __webpack_require__(115);
 	var _ = __webpack_require__(235);
+	var $ = __webpack_require__(217);
 
 	var Column = React.createClass({
 	  displayName: 'Column',
@@ -38624,10 +38630,24 @@
 	  },
 	  getRandomNumbers: function getRandomNumbers() {
 	    var numbers = [];
-	    _.times(9, function () {
-	      numbers.push(_.random(0, 100));
+	    var count = $('.count-input').val();
+	    var count_of_columns_in_row = count || 3;
+	    var amount = count_of_columns_in_row * count_of_columns_in_row;
+	    var isNumberDuplicated = function isNumberDuplicated(number) {
+	      return _.contains(numbers, number);
+	    };
+	    _.times(amount, function () {
+	      var pushNumber = function pushNumber() {
+	        var random_number = _.random(0, 100);
+	        if (isNumberDuplicated(random_number)) {
+	          pushNumber();
+	        } else {
+	          numbers.push(random_number);
+	        }
+	      };
+	      pushNumber();
 	    });
-	    this.setState({ numbers: this.NumbersForView(numbers, 3) });
+	    this.setState({ numbers: this.NumbersForView(numbers, count_of_columns_in_row) });
 	  },
 	  handleClick: function handleClick() {
 	    this.getRandomNumbers();
@@ -38661,7 +38681,8 @@
 	        'div',
 	        { onClick: this.handleClick },
 	        'Refresh'
-	      )
+	      ),
+	      React.createElement('input', { className: 'count-input', type: 'number', placeholder: 'Numbers in each row', max: '9', min: '1' })
 	    );
 	  }
 	});
