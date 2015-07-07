@@ -8,6 +8,7 @@ var Item = require('./item.js');
 var Counter = require('./counter.js');
 var Round = require('./round.js');
 var CounterToptal = require('./counter_toptal.js');
+var Bingo = require('./bingo.js');
 
 var Main = React.createClass({
     getInitialState: function() {
@@ -36,6 +37,7 @@ var Main = React.createClass({
                 <Counter />
                 <Round />
                 <CounterToptal />
+                <Bingo />
             </div>
         );
     }
@@ -50,6 +52,7 @@ var App = React.createClass({
       case 'item': Child = Item; break;
       case 'round': Child = Round; break;
       case 'counter': Child = Counter; break;
+      case 'bingo': Child = Bingo; break;
       default: Child = NoMatch;
     }
 
